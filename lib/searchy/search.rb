@@ -16,8 +16,11 @@ module Searchy
       end
       
       def search_arguments
-        arguments = Array.new(searchable_columns.length).map{"%#{query}%"}
-        Array.new(@query.length).map{arguments}.flatten
+        arguments = @query.map do |word|
+          Array.new(searchable_columns.length).map{"%#{word}%"}
+        end
+        
+        arguments.flatten
       end
       
       def search_command
