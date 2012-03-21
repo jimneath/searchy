@@ -2,7 +2,6 @@ module Searchy
   module Search
     extend ActiveSupport::Concern
     TYPES = [:string, :text]
-    attr_accessor :query_parts
     
     module ClassMethods
       def search(query = nil)
@@ -13,7 +12,7 @@ module Searchy
       protected 
       
       def query=(str)
-        self.query_parts = str.strip.split(/\s+/)
+        @query_parts = str.strip.split(/\s+/)
       end
       
       def search_scope
@@ -22,11 +21,11 @@ module Searchy
       
       def search_arguments
         arguments = Array.new(searchable_columns.length).map{"%#{query}%"}
-        Array.new(self.query_parts.length).map{arguments}.flatten
+        Array.new(@query_parts.length).map{arguments}.flatten
       end
       
       def search_command
-        parts = self.query_parts.map do
+        parts = @query_parts.map do
           searchable_columns.map{|f| "#{table_name}.#{field} LIKE ?"}.join(' OR ')
         end
         
