@@ -5,7 +5,7 @@ module Searchy
     
     module ClassMethods
       def search(query = nil)
-        @query = query.strip.split(/\s+/)
+        @query = query.to_s.strip.split(/\s+/)
         search_scope
       end
       
