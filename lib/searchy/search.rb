@@ -12,7 +12,7 @@ module Searchy
       protected 
       
       def search_scope
-        query.present? ? where([search_command, *search_arguments]) : scoped
+        @query.present? ? where([search_command, *search_arguments]) : scoped
       end
       
       def search_arguments
