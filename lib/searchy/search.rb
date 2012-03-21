@@ -22,7 +22,7 @@ module Searchy
       
       def search_command
         parts = @query.map do
-          searchable_columns.map{|f| "#{table_name}.#{field} LIKE ?"}.join(' OR ')
+          searchable_columns.map{|f| "#{table_name}.#{f} LIKE ?"}.join(' OR ')
         end
         
         parts.map{|p| "(#{p})"}.join(' AND ')
