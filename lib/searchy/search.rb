@@ -16,7 +16,7 @@ module Searchy
       
       def search_command
         parts = searchable_columns.map do |field| 
-          "#{table_name}.#{f} LIKE ?"
+          "#{table_name}.#{field} LIKE ?"
         end
         
         parts.join(' OR ')
@@ -24,7 +24,7 @@ module Searchy
       
       def searchable_columns
         @searchable_columns ||= self.columns.select do |column| 
-          TYPES.include?(c.type)
+          TYPES.include?(column.type)
         end.map(&:name)
       end
     end
