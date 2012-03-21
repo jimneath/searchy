@@ -5,15 +5,11 @@ module Searchy
     
     module ClassMethods
       def search(query = nil)
-        self.query = query
+        @query = query.strip.split(/\s+/)
         search_scope
       end
       
       protected 
-      
-      def query=(str)
-        @query_parts = str.strip.split(/\s+/)
-      end
       
       def search_scope
         query.present? ? where([search_command, *search_arguments]) : scoped
@@ -21,11 +17,11 @@ module Searchy
       
       def search_arguments
         arguments = Array.new(searchable_columns.length).map{"%#{query}%"}
-        Array.new(@query_parts.length).map{arguments}.flatten
+        Array.new(@query.length).map{arguments}.flatten
       end
       
       def search_command
-        parts = @query_parts.map do
+        parts = @query.map do
           searchable_columns.map{|f| "#{table_name}.#{field} LIKE ?"}.join(' OR ')
         end
         
